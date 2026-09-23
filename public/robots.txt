@@ -1,0 +1,8 @@
+# Narmada Engineering Works
+User-agent: *
+Allow: /
+
+# Keep the crawl budget on real pages
+Disallow: /*.json$
+
+Sitemap: https://www.narmadaengineeringworks.com/sitemap.xml
