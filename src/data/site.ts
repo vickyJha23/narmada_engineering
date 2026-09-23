@@ -9,7 +9,7 @@ export const site = {
   subHeadline:
     'Trusted manufacturing partner for precision fabrication and engineering excellence.',
   speciality:
-    'Fabrication work & services of any Stenter Machine & Textile Machinery, and Boiler Manpower Supplier.',
+    'Fabrication work & services of any Stenter Machine & Textile Machinery.',
   description:
     'Narmada Engineering Works, Umbergaon, Gujarat — precision sheet metal fabrication, heavy fabrication, structural steel works, stenter machine hot panels, nozzle chambers, yarn trolleys, ducting, AHU components, portable cabins and customised engineering solutions.',
   url: 'https://www.narmadaengineeringworks.com',
@@ -36,8 +36,14 @@ export const site = {
     opens: '09:00',
     closes: '19:00',
   },
-  /** Facebook / Instagram / IndiaMART URLs — add them here once the pages are live. */
-  social: [] as string[],
+  /**
+   * Social profiles. Paste the URLs here once the pages exist — the footer icons
+   * and the schema.org `sameAs` links both appear automatically, and disappear
+   * again while the list is empty. `icon` must be a name from Icons.tsx.
+   *
+   *   { label: 'Instagram', url: 'https://instagram.com/…', icon: 'instagram' },
+   */
+  social: [] as { label: string; url: string; icon: 'facebook' | 'instagram' | 'linkedin' }[],
 } as const
 
 export const nav = [
@@ -120,9 +126,9 @@ export const capabilities = [
     body: 'In-house surface preparation, priming, painting and powder-coated finishes before dispatch.',
   },
   {
-    icon: 'people',
-    title: 'Boiler Manpower Supply',
-    body: 'Skilled manpower supply for boiler and plant operations alongside our fabrication services.',
+    icon: 'blueprint',
+    title: 'Custom Fabrication to Drawing',
+    body: 'One-off components or repeat production batches made to your drawing, sample or sketch.',
   },
 ]
 

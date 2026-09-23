@@ -52,7 +52,7 @@ export function buildStructuredData() {
             closes: site.openingHours.closes,
           },
         ],
-        ...(site.social.length > 0 ? { sameAs: site.social } : {}),
+        ...(site.social.length > 0 ? { sameAs: site.social.map((s) => s.url) } : {}),
         knowsAbout: capabilities.map((c) => c.title),
         contactPoint: site.contacts.map((c) => ({
           '@type': 'ContactPoint',
@@ -146,7 +146,7 @@ export const faqs = [
     a: 'Yes. Surface preparation, priming, painting and powder-coated finishes are done in house, and every job is dimensionally checked before protective packing and dispatch.',
   },
   {
-    q: 'Do you also supply manpower?',
-    a: 'Yes. Alongside fabrication we supply skilled boiler manpower and provide fabrication services for stenter machines and textile machinery at customer sites.',
+    q: 'Which materials do you fabricate in?',
+    a: 'We work in mild steel (MS), stainless steel and galvanised (GI) sheet, along with structural steel sections — selected to suit the duty, temperature and finish your application needs.',
   },
 ]

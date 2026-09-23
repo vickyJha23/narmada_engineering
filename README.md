@@ -41,6 +41,7 @@ Copy `.env.example` to `.env` and edit it. Every value is optional.
 These are read **at build time**. After editing `.env`, run `pnpm build` again.
 
 **→ [ANALYTICS.md](ANALYTICS.md) walks through getting a Google Analytics ID step by step.**
+**→ [SOCIAL-KIT.md](SOCIAL-KIT.md) has the images and copy for the Facebook / Instagram pages.**
 
 ---
 
@@ -49,7 +50,8 @@ These are read **at build time**. After editing `.env`, run `pnpm build` again.
 ```
 public/
   brand/            logo variants extracted from the brochure (dark, light, mark)
-  products/         56 product photos as .webp
+                    plus social-profile.png / social-cover.png for the social pages
+  products/         56 watermarked product photos as .webp
   robots.txt        crawler rules + sitemap pointer
   site.webmanifest  PWA/install metadata
   _headers          cache + security headers (Netlify / Cloudflare Pages)
@@ -80,7 +82,25 @@ capabilities, industries served and the "why choose us" list.
 FAQ answers live in `src/lib/seo.ts` (they are also emitted as FAQ structured data, so
 editing them updates both the page and what Google sees).
 
+### Social links
+
+The footer social icons and the schema.org `sameAs` links are both driven by the
+`social` array in `src/data/site.ts`. It is empty, so **nothing social is shown on the
+site today**. Paste the URLs in and they appear on the next build:
+
+```ts
+social: [
+  { label: 'Facebook',  url: 'https://www.facebook.com/…',  icon: 'facebook'  },
+  { label: 'Instagram', url: 'https://www.instagram.com/…', icon: 'instagram' },
+],
+```
+
 ### Adding or replacing a product photo
+
+Every product photo carries a Narmada Engineering Works watermark in the bottom-right
+corner — navy ink over a soft halo, so it stays readable on white studio backgrounds
+and on dark mill-finish steel alike. Watermark any new photo the same way before
+adding it.
 
 1. Put the image in `public/products/` as `.webp` (roughly 4:3, plain background works best).
 2. Add an entry to `src/data/products.ts`:
@@ -118,6 +138,9 @@ To add a **new category**, add the name to `productCategories` in the same file.
 - **Sitemap.** `dist/sitemap.xml` includes an `<image:image>` entry for every product
   photo with a caption, so the catalogue can surface in Google Images.
 - **`robots.txt`** points at the sitemap.
+- **Motion** is decorative only. Every animation is CSS-driven and collapses under
+  `prefers-reduced-motion: reduce`, so nothing is hidden from a visitor who turns
+  animation off — the reveal classes fall back to fully visible.
 - **Accessibility and semantics**, which search engines also weigh: one `<h1>`, ordered
   headings, a skip link, labelled form fields, descriptive `alt` text on every product
   image, `aria-current` on the active nav item, and a `<noscript>` fallback carrying the
@@ -172,6 +195,9 @@ There is only one route (`/`), so no SPA rewrite rule is needed.
   by the site but are kept as ready-to-use brand assets for letterheads and quotations.
 - The website URL is currently a placeholder (`narmadaengineeringworks.com`). Replace it
   everywhere before launch — `.env`, `index.html`, `public/robots.txt`.
-- Social profile links were not in the brochure. When the Facebook and Instagram pages are
-  ready, add them to `site.ts` and to the `Organization` node's `sameAs` array in
-  `src/lib/seo.ts` so Google can connect them to the business.
+- Social profile links were not in the brochure, so the footer shows none. Add them to
+  `social` in `site.ts` (see above) and both the footer icons and the `sameAs`
+  structured data follow automatically — no change needed in `src/lib/seo.ts`.
+- The brochure described the company as a boiler manpower supplier. That line has been
+  removed throughout at the owner's instruction; the capability card in its place is
+  "Custom Fabrication to Drawing".

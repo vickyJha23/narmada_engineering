@@ -75,10 +75,10 @@ export function Contact() {
         </div>
 
         <div className="contact__grid">
-          <div className="reveal">
-            <div className="contact-cards">
+          <div className="reveal reveal--left">
+            <div className="contact-cards" data-stagger="80">
               {site.contacts.map((c) => (
-                <div className="contact-card" key={c.phone}>
+                <div className="contact-card reveal" key={c.phone}>
                   <span className="contact-card__icon">
                     <Icon name="phone" />
                   </span>
@@ -94,7 +94,7 @@ export function Contact() {
                 </div>
               ))}
 
-              <div className="contact-card">
+              <div className="contact-card reveal">
                 <span className="contact-card__icon">
                   <Icon name="mail" />
                 </span>
@@ -109,7 +109,7 @@ export function Contact() {
                 </div>
               </div>
 
-              <div className="contact-card">
+              <div className="contact-card reveal">
                 <span className="contact-card__icon">
                   <Icon name="pin" />
                 </span>
@@ -127,7 +127,7 @@ export function Contact() {
                 </div>
               </div>
 
-              <div className="contact-card">
+              <div className="contact-card reveal">
                 <span className="contact-card__icon">
                   <Icon name="clock" />
                 </span>
@@ -150,7 +150,7 @@ export function Contact() {
             </div>
           </div>
 
-          <form className="form reveal" ref={formRef} onSubmit={submit('whatsapp')}>
+          <form className="form reveal reveal--right" ref={formRef} onSubmit={submit('whatsapp')}>
             <div className="form__row">
               <div className="field">
                 <label htmlFor="f-name">
@@ -224,7 +224,6 @@ export function Contact() {
                 <option value="Custom job work as per drawing">
                   Custom job work as per drawing
                 </option>
-                <option value="Boiler manpower supply">Boiler manpower supply</option>
                 <option value="Other">Other</option>
               </select>
             </div>

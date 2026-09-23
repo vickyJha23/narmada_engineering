@@ -76,6 +76,24 @@ export function Footer() {
                 View on Google Maps
               </a>
             </address>
+
+            {site.social.length > 0 && (
+              <ul className="footer__social">
+                {site.social.map((s) => (
+                  <li key={s.url}>
+                    <a
+                      href={s.url}
+                      target="_blank"
+                      rel="noopener"
+                      aria-label={`${site.name} on ${s.label}`}
+                      onClick={() => track('social_click', { network: s.label })}
+                    >
+                      <Icon name={s.icon} />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </div>
 
@@ -94,6 +112,55 @@ export function Footer() {
         </div>
       </div>
     </footer>
+  )
+}
+
+/**
+ * Phone-only action bar pinned to the bottom of the screen. It slides up once
+ * the visitor leaves the hero, where the same three actions are already on show.
+ */
+export function MobileBar() {
+  const [on, setOn] = useState(false)
+
+  useEffect(() => {
+    const onScroll = () => setOn(window.scrollY > 420)
+    onScroll()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const primary = site.contacts[0]
+
+  return (
+    <div className={`mobile-bar${on ? ' is-on' : ''}`}>
+      <div className="mobile-bar__inner">
+        <a
+          href={telLink(primary.phone)}
+          onClick={() => track('call_click', { location: 'mobile_bar' })}
+        >
+          <Icon name="phone" />
+          Call
+        </a>
+        <a
+          className="is-wa"
+          href={waLink()}
+          target="_blank"
+          rel="noopener"
+          onClick={() => track('whatsapp_click', { location: 'mobile_bar' })}
+        >
+          <Icon name="whatsapp" />
+          WhatsApp
+        </a>
+        <a
+          className="is-quote"
+          href="#contact"
+          onClick={() => track('cta_click', { location: 'mobile_bar', label: 'Get a Quote' })}
+        >
+          <Icon name="mail" />
+          Get a Quote
+        </a>
+      </div>
+    </div>
   )
 }
 

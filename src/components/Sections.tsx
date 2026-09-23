@@ -17,7 +17,7 @@ import { Icon, type IconName } from './Icons'
 /* ---------------------------------------------------------------- strip -- */
 
 export function Strip() {
-  const line = [...highlights, 'Stenter Machine Fabrication', 'Boiler Manpower Supply']
+  const line = [...highlights, 'Stenter Machine Fabrication', 'Fabrication to Drawing']
   return (
     <div className="strip" aria-hidden="true">
       <div className="strip__track">
@@ -49,7 +49,7 @@ export function About() {
   return (
     <section className="section" id="about">
       <div className="container about__grid">
-        <div className="about__copy reveal">
+        <div className="about__copy reveal reveal--left">
           <p className="eyebrow">About Us</p>
           <h2>A dependable fabrication partner for Indian industry</h2>
           {aboutParagraphs.map((p, i) => (
@@ -59,10 +59,10 @@ export function About() {
           ))}
         </div>
 
-        <div className="about__media reveal">
-          <div className="about__collage">
+        <div className="about__media reveal reveal--right">
+          <div className="about__collage" data-stagger="90">
             {collage.map((p) => (
-              <figure key={p.slug}>
+              <figure className="reveal reveal--scale" key={p.slug}>
                 <img
                   src={p.src}
                   alt={p.title}
@@ -78,7 +78,7 @@ export function About() {
       </div>
 
       <div className="container">
-        <div className="vm-grid">
+        <div className="vm-grid" data-stagger="120">
           <article className="vm-card reveal">
             <Icon name="eye" />
             <h3>Our Vision</h3>
@@ -110,9 +110,9 @@ export function Capabilities() {
           </p>
         </div>
 
-        <div className="cards">
+        <div className="cards" data-stagger="70">
           {capabilities.map((c) => (
-            <article className="card reveal" key={c.title}>
+            <article className="card reveal reveal--scale" key={c.title}>
               <span className="card__icon">
                 <Icon name={c.icon as IconName} />
               </span>
@@ -141,7 +141,7 @@ export function Process() {
           </p>
         </div>
 
-        <div className="process">
+        <div className="process" data-stagger="90">
           {processSteps.map((s) => (
             <article className="process__item reveal" key={s.step}>
               <span>{s.step}</span>
@@ -166,7 +166,7 @@ export function Industries() {
           <h2>Supplying plants across Gujarat, Maharashtra and beyond</h2>
         </div>
 
-        <ul className="pill-list">
+        <ul className="pill-list" data-stagger="45">
           {industries.map((i) => (
             <li className="reveal" key={i}>
               <Icon name="check" />
@@ -190,7 +190,7 @@ export function WhyUs() {
           <h2>Quality you can measure, delivery you can plan around</h2>
         </div>
 
-        <ul className="pill-list">
+        <ul className="pill-list" data-stagger="45">
           {whyChooseUs.map((w) => (
             <li className="reveal" key={w}>
               <Icon name="check" />
@@ -214,7 +214,7 @@ export function Faq() {
           <h2>Frequently asked questions</h2>
         </div>
 
-        <div className="faq">
+        <div className="faq" data-stagger="60">
           {faqs.map((f) => (
             <details
               className="reveal"
@@ -242,14 +242,14 @@ export function CtaBand() {
   return (
     <section className="cta-band">
       <div className="container cta-band__inner">
-        <div className="reveal">
+        <div className="reveal reveal--left">
           <h2>Have a drawing ready? Let’s get it quoted.</h2>
           <p>
             Share your drawing, sample or requirement and our technical team will confirm
             feasibility, material and lead time.
           </p>
         </div>
-        <div className="cta-band__actions reveal">
+        <div className="cta-band__actions reveal reveal--right">
           <a
             className="btn btn--wa btn--lg"
             href={waLink()}

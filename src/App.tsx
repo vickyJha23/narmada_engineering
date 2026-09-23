@@ -3,7 +3,7 @@ import { Header } from './components/Header'
 import { Hero } from './components/Hero'
 import { Products } from './components/Products'
 import { Contact } from './components/Contact'
-import { Footer, FloatingActions } from './components/Footer'
+import { Footer, FloatingActions, MobileBar } from './components/Footer'
 import {
   About,
   Capabilities,
@@ -15,13 +15,15 @@ import {
   WhyUs,
 } from './components/Sections'
 import { initAnalytics } from './lib/analytics'
-import { useScrollReveal } from './lib/hooks'
+import { useParallax, useScrollProgress, useScrollReveal } from './lib/hooks'
 import { buildStructuredData } from './lib/seo'
 
 const structuredData = JSON.stringify(buildStructuredData())
 
 export default function App() {
   useScrollReveal()
+  useScrollProgress()
+  useParallax()
 
   useEffect(() => {
     initAnalytics()
@@ -40,6 +42,7 @@ export default function App() {
       </a>
 
       <Header />
+      <div className="progress" aria-hidden="true" />
 
       <main id="main">
         <Hero />
@@ -57,6 +60,7 @@ export default function App() {
 
       <Footer />
       <FloatingActions />
+      <MobileBar />
     </>
   )
 }

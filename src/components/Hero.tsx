@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react'
 import { highlights, site } from '../data/site'
 import { products } from '../data/products'
 import { track } from '../lib/analytics'
@@ -13,9 +14,20 @@ const showcase = [
   .map((slug) => products.find((p) => p.slug === slug))
   .filter((p): p is (typeof products)[number] => Boolean(p))
 
+/** Drives the staggered entrance animation defined in the stylesheet. */
+const enter = (index: number) => ({ '--enter-index': index }) as CSSProperties
+
 export function Hero() {
   return (
     <section className="hero" id="home">
+      {/* slow drifting colour behind the blueprint grid */}
+      <div className="hero__aurora" aria-hidden="true">
+        <span />
+        <span />
+        <span />
+      </div>
+      <div className="hero__sweep" aria-hidden="true" />
+
       <img
         className="hero__art"
         src="/hero-art.webp"
@@ -23,28 +35,31 @@ export function Hero() {
         aria-hidden="true"
         width={1400}
         height={712}
+        data-parallax="42"
       />
 
       <div className="container hero__grid">
         <div>
-          <p className="hero__badge">
+          <p className="hero__badge" data-enter style={enter(0)}>
             <span>Umbergaon, Gujarat</span>
             <span>{site.tagline}</span>
           </p>
 
-          <h1>
+          <h1 data-enter style={enter(1)}>
             Industrial Fabrication &amp; <em>Sheet Metal Solutions</em>
           </h1>
 
-          <p className="hero__sub">
+          <p className="hero__sub" data-enter style={enter(2)}>
             Trusted manufacturing partner for precision fabrication and engineering
             excellence — from stenter machine hot panels and nozzle chambers to heavy
             structures, ducting and portable cabins.
           </p>
 
-          <p className="hero__speciality">{site.speciality}</p>
+          <p className="hero__speciality" data-enter style={enter(3)}>
+            {site.speciality}
+          </p>
 
-          <div className="hero__actions">
+          <div className="hero__actions" data-enter style={enter(4)}>
             <a
               className="btn btn--lg"
               href="#contact"
@@ -61,7 +76,7 @@ export function Hero() {
             </a>
           </div>
 
-          <ul className="hero__chips">
+          <ul className="hero__chips" data-enter style={enter(5)}>
             {highlights.map((h) => (
               <li key={h} className="chip">
                 {h}
@@ -72,7 +87,7 @@ export function Hero() {
 
         <div className="hero__panel">
           {showcase.map((p, i) => (
-            <figure className="hero__tile" key={p.slug}>
+            <figure className="hero__tile" key={p.slug} style={enter(i)}>
               <img
                 src={p.src}
                 alt={p.title}
@@ -84,7 +99,7 @@ export function Hero() {
             </figure>
           ))}
 
-          <div className="hero__stat">
+          <div className="hero__stat" data-enter style={enter(6)}>
             <Icon name="whatsapp" />
             <div>
               <strong>Send your drawing on WhatsApp</strong>

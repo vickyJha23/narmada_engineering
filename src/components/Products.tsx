@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
+import type { CSSProperties } from 'react'
 import { productCategories, products, type Product } from '../data/products'
 import { track } from '../lib/analytics'
 import { waLink } from '../lib/links'
-import { useBodyLock, useEscape, useScrollReveal } from '../lib/hooks'
+import { useBodyLock, useEscape, useScrollReveal, useSwipe } from '../lib/hooks'
 import { Icon } from './Icons'
 
 const INITIAL_COUNT = 16
@@ -70,13 +71,13 @@ export function Products() {
           ))}
         </div>
 
-        <div className="gallery">
+        <div className="gallery" data-stagger="40" key={filter}>
           {visible.map((p, i) => (
             <button
               type="button"
-              className="tile reveal"
+              className="tile reveal reveal--scale"
               key={p.slug}
-              style={{ animationDelay: `${Math.min(i, 12) * 28}ms` }}
+              style={{ animationDelay: `${Math.min(i, 12) * 28}ms` } as CSSProperties}
               onClick={() => open(i)}
               aria-label={`View ${p.title}`}
             >
@@ -133,14 +134,20 @@ function Lightbox({
   onClose: () => void
 }) {
   const item = items[index]
+  const [direction, setDirection] = useState<1 | -1>(1)
 
   useBodyLock(true)
   useEscape(onClose)
 
   const step = useCallback(
-    (delta: number) => onIndex((index + delta + items.length) % items.length),
+    (delta: 1 | -1) => {
+      setDirection(delta)
+      onIndex((index + delta + items.length) % items.length)
+    },
     [index, items.length, onIndex],
   )
+
+  const swipe = useSwipe(step)
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -161,7 +168,9 @@ function Lightbox({
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <figure className="lightbox__figure">
+      <figure className="lightbox__figure" {...swipe}>
+        <span className="lightbox__hint">Swipe to browse</span>
+
         <button type="button" className="lightbox__close" aria-label="Close" onClick={onClose}>
           <Icon name="close" />
         </button>
@@ -182,7 +191,14 @@ function Lightbox({
           <Icon name="chevronRight" />
         </button>
 
-        <img src={item.src} alt={item.title} width={item.width} height={item.height} />
+        <img
+          key={item.slug}
+          src={item.src}
+          alt={item.title}
+          width={item.width}
+          height={item.height}
+          style={{ '--slide-from': `${direction * 26}px` } as CSSProperties}
+        />
 
         <figcaption className="lightbox__caption">
           <div>
