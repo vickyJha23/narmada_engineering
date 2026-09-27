@@ -16,8 +16,7 @@ export const site = {
   email: 'narmada.engworks@yahoo.com',
   founded: '',
   contacts: [
-    { name: 'Jaimin Makwana', phone: '+917698555564', display: '+91 76985 55564' },
-    { name: 'Vinod Makwana', phone: '+919879565719', display: '+91 98795 65719' },
+    { name: 'Jaimin Makwana', phone: '+917698555564', display: '+91 76985 55564 / +91 92134 76913' },
   ],
   address: {
     street: 'Survey No. 918, Bhomti Faliya, Village Solsumba',
