@@ -1,66 +1,29 @@
-import { useEffect } from 'react'
-import { Header } from './components/Header'
-import { Hero } from './components/Hero'
-import { Products } from './components/Products'
-import { Contact } from './components/Contact'
-import { Footer, FloatingActions, MobileBar } from './components/Footer'
-import {
-  About,
-  Capabilities,
-  CtaBand,
-  Faq,
-  Industries,
-  Process,
-  Strip,
-  WhyUs,
-} from './components/Sections'
-import { initAnalytics } from './lib/analytics'
-import { useParallax, useScrollProgress, useScrollReveal } from './lib/hooks'
-import { buildStructuredData } from './lib/seo'
-
-const structuredData = JSON.stringify(buildStructuredData())
+import { Route, Routes } from 'react-router-dom'
+import { Layout } from './components/Layout'
+import Home from './pages/Home'
+import AboutPage from './pages/AboutPage'
+import CapabilitiesPage from './pages/CapabilitiesPage'
+import ProductsPage from './pages/ProductsPage'
+import ProductDetailPage from './pages/ProductDetailPage'
+import GalleryPage from './pages/GalleryPage'
+import IndustriesPage from './pages/IndustriesPage'
+import ContactPage from './pages/ContactPage'
+import NotFound from './pages/NotFound'
 
 export default function App() {
-  useScrollReveal()
-  useScrollProgress()
-  useParallax()
-
-  useEffect(() => {
-    initAnalytics()
-  }, [])
-
   return (
-    <>
-      {/* schema.org graph — prerendered into dist/index.html for search engines */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: structuredData }}
-      />
-
-      <a className="skip-link" href="#main">
-        Skip to content
-      </a>
-
-      <Header />
-      <div className="progress" aria-hidden="true" />
-
-      <main id="main">
-        <Hero />
-        <Strip />
-        <About />
-        <Capabilities />
-        <Products />
-        <Process />
-        <Industries />
-        <WhyUs />
-        <CtaBand />
-        <Faq />
-        <Contact />
-      </main>
-
-      <Footer />
-      <FloatingActions />
-      <MobileBar />
-    </>
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<AboutPage />} />
+        <Route path="capabilities" element={<CapabilitiesPage />} />
+        <Route path="products" element={<ProductsPage />} />
+        <Route path="products/:slug" element={<ProductDetailPage />} />
+        <Route path="gallery" element={<GalleryPage />} />
+        <Route path="industries" element={<IndustriesPage />} />
+        <Route path="contact" element={<ContactPage />} />
+        <Route path="*" element={<NotFound />} />
+      </Route>
+    </Routes>
   )
 }

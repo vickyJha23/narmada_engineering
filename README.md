@@ -3,11 +3,14 @@
 Marketing site for Narmada Engineering Works, Umbergaon (Valsad, Gujarat) — industrial
 fabrication and sheet metal solutions.
 
-Built with React 19 + TypeScript + Vite. It is a single long page, **prerendered to static
-HTML at build time** so search engines and link previews read the full content without
-running JavaScript.
+Built with React 19 + TypeScript + Vite, routed with React Router and animated with GSAP.
+Every route is **prerendered to its own static HTML file at build time**, so search engines
+and link previews read each page's real content — and its own title, description, canonical
+URL and structured data — without running JavaScript.
 
-All copy, contact details and the 56 product photos come from the company brochure.
+Copy and contact details come from the company brochure. Product photos come from the
+brochure and from workshop photographs with the background removed; all of them carry the
+Narmada watermark.
 
 ---
 
@@ -16,12 +19,29 @@ All copy, contact details and the 56 product photos come from the company brochu
 ```bash
 pnpm install
 pnpm dev        # http://localhost:5173
-pnpm build      # -> dist/  (typecheck, bundle, prerender, sitemap)
+pnpm build      # -> dist/  (typecheck, bundle, prerender every route, sitemap)
 pnpm preview    # serve dist/ at http://localhost:4173
 pnpm lint
 ```
 
 Deploy by uploading the contents of `dist/` to any static host.
+
+## Pages
+
+| Route | Page |
+| --- | --- |
+| `/` | Home |
+| `/about` | About us |
+| `/capabilities` | Capabilities & services |
+| `/products` | Product catalogue, filterable (`?category=…`) |
+| `/products/<slug>` | One page per product — 68 of them |
+| `/gallery` | Our work — shop-floor photographs |
+| `/industries` | Industries served |
+| `/contact` | Contact, map and enquiry form |
+
+`src/data/pages.ts` is the single source for the page list: it drives the header and
+footer navigation, each page's `<title>` and meta description, the breadcrumbs, the
+prerender step and `sitemap.xml`. Add a page there and everything follows.
 
 ---
 
@@ -64,8 +84,13 @@ src/
   lib/analytics.ts  GA4 / Clarity / Plausible loader + event tracking
   lib/seo.ts        schema.org graph and the FAQ content
   lib/links.ts      WhatsApp / tel / mailto / Google Maps links
-  lib/hooks.ts      scroll reveal, sticky header, active section, modal helpers
-  components/       Header, Hero, Sections, Products (gallery + lightbox), Contact, Footer
+  data/pages.ts     ← the page table (routes, titles, descriptions, nav labels)
+  data/gallery.ts   generated list of shop-floor photographs
+  lib/animate.ts    GSAP: scroll reveals, hero timeline, parallax, pinned scroll
+  lib/hooks.ts      sticky header, swipe, modal and body-lock helpers
+  pages/            one component per route
+  components/       Layout, Header, Hero, Sections, ProductGrid, Lightbox,
+                    VideoSection, Contact, Footer, Seo
   index.css         the whole stylesheet, organised in numbered sections
 
 scripts/
@@ -81,6 +106,32 @@ capabilities, industries served and the "why choose us" list.
 
 FAQ answers live in `src/lib/seo.ts` (they are also emitted as FAQ structured data, so
 editing them updates both the page and what Google sees).
+
+### The factory tour video
+
+`VideoSection` shows a poster image with a "coming soon" note until a video exists. To
+switch it on:
+
+1. Put the file at `public/media/factory-tour.mp4` (H.264 MP4, 1080p, ideally under 20 MB —
+   it is served as a plain static asset, not streamed).
+2. Optionally replace `public/media/factory-tour-poster.jpg` with a still from the video.
+3. In `src/data/site.ts`, set `video.available` to `true`.
+4. `pnpm build` and re-upload.
+
+The player stays behind the poster until someone presses play, so visitors who do not
+watch it never download the file.
+
+### Animation
+
+GSAP with ScrollTrigger drives every scroll effect, in `src/lib/animate.ts`: batched scroll
+reveals, the hero entrance timeline, scrubbed parallax, the scroll-progress bar and a
+Ken-Burns push on the video poster and product photo. The stylesheet only supplies the
+*initial* hidden state (`.reveal { opacity: 0 }`) so prerendered HTML never flashes before
+GSAP takes over.
+
+Two escape hatches keep content from being trapped behind an animation that never runs:
+`<noscript>` in `index.html` forces every `.reveal` visible, and the reduced-motion media
+query does the same for visitors who ask for less movement.
 
 ### Social links
 
@@ -125,18 +176,20 @@ To add a **new category**, add the name to `productCategories` in the same file.
 
 ## How the SEO is set up
 
-- **Prerendered HTML.** `pnpm build` runs the client build, then an SSR build, then
-  `scripts/prerender.mjs` renders the app with `renderToString` and injects the markup
-  into `dist/index.html`. The browser hydrates that same markup. Crawlers that do not run
-  JavaScript still see roughly 69 kB of real content.
-- **Structured data.** `src/lib/seo.ts` builds a schema.org `@graph` with
-  `Organization`/`LocalBusiness` (address, geo coordinates, both phone numbers, opening
-  info), `WebSite`, `WebPage`, an `OfferCatalog` listing all 56 products by category,
-  `Service`, and an `FAQPage`. It renders inside the page, so it is part of the static HTML.
+- **Prerendered HTML, one file per route.** `pnpm build` runs the client build, then an SSR
+  build, then `scripts/prerender.mjs` renders every route with `renderToString` and writes
+  `dist/<route>/index.html` — 75 pages in all — each with its own title, description,
+  canonical URL, Open Graph tags and JSON-LD swapped into the template. The browser
+  hydrates the same markup, and `components/Seo.tsx` rewrites the head again on client-side
+  navigation.
+- **Structured data, per page.** `src/lib/seo.ts` builds a schema.org `@graph` for each
+  route: `Organization`/`LocalBusiness` and `WebSite` everywhere, plus `BreadcrumbList` on
+  inner pages, an `OfferCatalog` of the whole catalogue on `/products`, `Service` on
+  `/capabilities`, `FAQPage` on `/contact`, and a full `Product` node on every product page.
 - **Meta tags.** Title, description, keywords, canonical, robots, Open Graph, Twitter
   card and `geo.*` local-business hints are all in `index.html`.
-- **Sitemap.** `dist/sitemap.xml` includes an `<image:image>` entry for every product
-  photo with a caption, so the catalogue can surface in Google Images.
+- **Sitemap.** `dist/sitemap.xml` lists all 75 URLs and includes an `<image:image>` entry
+  with a caption for every product photo, so the catalogue can surface in Google Images.
 - **`robots.txt`** points at the sitemap.
 - **Motion** is decorative only. Every animation is CSS-driven and collapses under
   `prefers-reduced-motion: reduce`, so nothing is hidden from a visitor who turns
@@ -173,15 +226,22 @@ in the host's environment settings.
 **Vercel** — framework preset *Vite*, build command `pnpm build`, output directory `dist`.
 
 **Shared hosting (cPanel, Hostinger) or any nginx/Apache box** — run `pnpm build` locally
-and upload everything inside `dist/` to the web root. Suggested nginx rules:
+and upload everything inside `dist/` to the web root.
+
+Each route is a real directory with its own `index.html` (`dist/about/index.html`,
+`dist/products/yarn-trolley/index.html`, …), so **no SPA rewrite rule is needed** and deep
+links work even with JavaScript disabled. The server only has to serve directory indexes:
 
 ```nginx
+try_files $uri $uri/ $uri/index.html =404;
+error_page 404 /404.html;
+
 location /assets/ { expires 1y; add_header Cache-Control "public, immutable"; }
-location ~* \.(webp|png|jpg|svg)$ { expires 30d; add_header Cache-Control "public"; }
-location = /index.html { add_header Cache-Control "public, max-age=0, must-revalidate"; }
+location ~* \.(webp|png|jpg|svg|mp4)$ { expires 30d; add_header Cache-Control "public"; }
+location ~* \.html$ { add_header Cache-Control "public, max-age=0, must-revalidate"; }
 ```
 
-There is only one route (`/`), so no SPA rewrite rule is needed.
+On Apache, directory indexes are on by default; add `ErrorDocument 404 /404.html`.
 
 ---
 

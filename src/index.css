@@ -314,6 +314,24 @@ select {
   box-shadow: none;
 }
 
+/* On the dark page banners and the product page the outline button needs to
+   invert, or its navy label disappears into the navy background. */
+.section--dark .btn--outline,
+.page-hero .btn--outline,
+.product .btn--outline,
+.cta-band .btn--outline {
+  --btn-fg: #fff;
+  border-color: rgb(255 255 255 / 0.38);
+}
+
+.section--dark .btn--outline:hover,
+.page-hero .btn--outline:hover,
+.product .btn--outline:hover,
+.cta-band .btn--outline:hover {
+  background: rgb(255 255 255 / 0.12);
+  border-color: rgb(255 255 255 / 0.7);
+}
+
 .btn--wa {
   --btn-bg: #25d366;
   --btn-fg: #06331a;
@@ -445,17 +463,17 @@ select {
 }
 
 .nav a:hover::after,
-.nav a[aria-current='true']::after {
+.nav a.active::after {
   transform: scaleX(1);
 }
 
 .nav a:hover,
-.nav a[aria-current='true'] {
+.nav a.active {
   color: var(--blue-500);
 }
 
 .header:not(.is-stuck) .nav a:hover,
-.header:not(.is-stuck) .nav a[aria-current='true'] {
+.header:not(.is-stuck) .nav a.active {
   color: #fff;
 }
 
@@ -1010,6 +1028,8 @@ select {
 .tile {
   position: relative;
   display: block;
+  color: inherit;
+  text-decoration: none;
   width: 100%;
   padding: 0;
   border: 1px solid var(--line);
@@ -1705,40 +1725,16 @@ select {
    -------------------------------------------------------------------------- */
 
 /* a) Scroll reveals ------------------------------------------------------- */
+/* GSAP animates opacity and transform; CSS only supplies the starting state so
+   the prerendered HTML never flashes before GSAP takes over. The direction
+   modifiers below are read by lib/animate.ts — they carry no styles of their own.
+   `.no-js` (set by the <noscript> block in index.html) forces everything back on. */
 .reveal {
   opacity: 0;
-  translate: 0 26px;
-  transition:
-    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-    translate 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-    scale 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
-    filter 0.7s ease var(--reveal-delay, 0ms);
-  will-change: opacity, translate;
-}
-
-.reveal--left {
-  translate: -34px 0;
-}
-
-.reveal--right {
-  translate: 34px 0;
-}
-
-.reveal--scale {
-  translate: 0 18px;
-  scale: 0.94;
-}
-
-.reveal--blur {
-  filter: blur(10px);
 }
 
 .reveal.is-visible {
   opacity: 1;
-  translate: 0 0;
-  scale: 1;
-  filter: none;
-  will-change: auto;
 }
 
 /* b) Hero entrance -------------------------------------------------------- */
@@ -2648,6 +2644,461 @@ select {
 }
 
 /* --------------------------------------------------------------------------
+   22. Inner pages
+
+   Everything below belongs to the pages that are not the home page: the banner
+   at the top of each one, breadcrumbs, the product detail layout, the shop-floor
+   masonry gallery and the factory-tour video block.
+   -------------------------------------------------------------------------- */
+
+/* Page banner ------------------------------------------------------------- */
+.page-hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-top: calc(var(--header-h) + clamp(2.5rem, 5vw, 4.5rem));
+  padding-bottom: clamp(3.5rem, 7vw, 6rem);
+  background:
+    radial-gradient(800px 400px at 80% 0%, rgb(47 107 214 / 0.32), transparent 62%),
+    linear-gradient(150deg, var(--navy-900), var(--navy-950));
+  color: rgb(255 255 255 / 0.78);
+}
+
+.page-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: radial-gradient(900px 400px at 40% 20%, #000 35%, transparent 85%);
+}
+
+.page-hero__aurora {
+  position: absolute;
+  inset: -30% -10% auto;
+  height: 160%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.page-hero__aurora span {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: drift 30s ease-in-out infinite;
+}
+
+.page-hero__aurora span:nth-child(1) {
+  width: 36%;
+  aspect-ratio: 1;
+  left: 8%;
+  top: 22%;
+  background: rgb(47 107 214 / 0.3);
+}
+
+.page-hero__aurora span:nth-child(2) {
+  width: 30%;
+  aspect-ratio: 1;
+  right: 10%;
+  top: 34%;
+  background: rgb(28 68 136 / 0.34);
+  animation-duration: 36s;
+  animation-direction: reverse;
+}
+
+.page-hero h1 {
+  color: #fff;
+  font-size: clamp(1.9rem, 1.3rem + 2.6vw, 3.1rem);
+  max-width: 20ch;
+}
+
+.page-hero .eyebrow {
+  color: var(--blue-400);
+}
+
+.page-hero__intro {
+  margin-top: 1.1rem;
+  max-width: 58ch;
+  font-size: clamp(1rem, 0.96rem + 0.35vw, 1.15rem);
+  color: rgb(255 255 255 / 0.72);
+}
+
+/* Breadcrumbs ------------------------------------------------------------- */
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.15rem;
+  margin-bottom: 1.35rem;
+  font-size: 0.82rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: rgb(255 255 255 / 0.55);
+}
+
+.crumbs span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.15rem;
+}
+
+.crumbs a {
+  color: rgb(255 255 255 / 0.72);
+  padding: 0.15rem 0.1rem;
+}
+
+.crumbs a:hover {
+  color: #fff;
+}
+
+.crumbs [aria-current='page'] {
+  color: var(--blue-400);
+}
+
+.crumbs svg {
+  width: 15px;
+  height: 15px;
+  opacity: 0.5;
+}
+
+/* Product detail ---------------------------------------------------------- */
+.product {
+  position: relative;
+  overflow: hidden;
+  padding-top: calc(var(--header-h) + clamp(1.75rem, 4vw, 3rem));
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+  background:
+    radial-gradient(700px 360px at 85% -10%, rgb(47 107 214 / 0.28), transparent 60%),
+    linear-gradient(160deg, var(--navy-900), var(--navy-950));
+  color: rgb(255 255 255 / 0.76);
+}
+
+.product__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(1.75rem, 4vw, 3.5rem);
+  align-items: start;
+}
+
+.product__figure {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid rgb(255 255 255 / 0.18);
+  box-shadow: var(--shadow-lg);
+  aspect-ratio: 4 / 3;
+  display: grid;
+  place-items: center;
+}
+
+.product__figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 1.25rem;
+}
+
+.product__category {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.38rem 0.85rem;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.1);
+  border: 1px solid rgb(255 255 255 / 0.18);
+  color: rgb(255 255 255 / 0.85);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.product__body h1 {
+  color: #fff;
+  margin-block: 1rem 1.1rem;
+  font-size: clamp(1.7rem, 1.2rem + 2.1vw, 2.6rem);
+}
+
+.product__body .lede {
+  color: rgb(255 255 255 / 0.75);
+}
+
+.product__specs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 0.75rem;
+  margin-block: 1.85rem;
+}
+
+.product__specs > div {
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  background: rgb(255 255 255 / 0.06);
+  border: 1px solid rgb(255 255 255 / 0.12);
+}
+
+.product__specs dt {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue-400);
+  margin-bottom: 0.3rem;
+}
+
+.product__specs dd {
+  margin: 0;
+  font-size: 0.93rem;
+  color: rgb(255 255 255 / 0.85);
+}
+
+.product__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.product__note {
+  margin-top: 1.35rem;
+  font-size: 0.9rem;
+  color: rgb(255 255 255 / 0.6);
+  max-width: 56ch;
+}
+
+/* Shop-floor gallery ------------------------------------------------------ */
+.masonry {
+  columns: 3 260px;
+  column-gap: clamp(0.75rem, 1.6vw, 1.15rem);
+}
+
+.masonry__item {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 0 0 clamp(0.75rem, 1.6vw, 1.15rem);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper-3);
+  overflow: hidden;
+  cursor: zoom-in;
+  break-inside: avoid;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease,
+    border-color 0.22s ease;
+}
+
+.masonry__item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+  border-color: var(--blue-400);
+}
+
+.masonry__item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.45s ease;
+}
+
+.masonry__item:hover img {
+  transform: scale(1.04);
+}
+
+.masonry__caption {
+  position: absolute;
+  inset: auto 0 0 0;
+  padding: 2rem 0.85rem 0.7rem;
+  background: linear-gradient(to top, rgb(7 18 48 / 0.9), transparent);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  opacity: 0;
+  translate: 0 8px;
+  transition:
+    opacity 0.22s ease,
+    translate 0.22s ease;
+}
+
+.masonry__item:hover .masonry__caption,
+.masonry__item:focus-visible .masonry__caption {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* Factory tour video ------------------------------------------------------ */
+.video__frame {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--navy-950);
+  box-shadow: var(--shadow-lg);
+  aspect-ratio: 16 / 9;
+}
+
+.video__player,
+.video__poster {
+  width: 100%;
+  height: 100%;
+}
+
+.video__player {
+  display: block;
+  object-fit: cover;
+  background: #000;
+}
+
+.video__poster {
+  position: relative;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+}
+
+.video__poster img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+.video__poster::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(60% 60% at 50% 50%, rgb(7 18 48 / 0.72), transparent 70%),
+    linear-gradient(160deg, rgb(7 18 48 / 0.6), rgb(7 18 48 / 0.38));
+}
+
+.video__play {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(64px, 8vw, 88px);
+  aspect-ratio: 1;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 0.95);
+  color: var(--navy-800);
+  cursor: pointer;
+  box-shadow: 0 16px 40px rgb(7 18 48 / 0.4);
+  transition: transform 0.2s ease;
+}
+
+.video__play:hover {
+  transform: scale(1.07);
+}
+
+.video__play svg {
+  width: 38%;
+  height: 38%;
+  margin-left: 6%;
+}
+
+.video__play::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgb(255 255 255 / 0.7);
+  animation: pulse-ring 2.6s ease-out infinite;
+}
+
+.video__pending {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  border-radius: var(--radius);
+  background: rgb(7 18 48 / 0.78);
+  border: 1px solid rgb(255 255 255 / 0.22);
+  backdrop-filter: blur(8px);
+  color: rgb(255 255 255 / 0.88);
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-align: center;
+}
+
+.video__pending svg {
+  width: 30px;
+  height: 30px;
+  opacity: 0.8;
+}
+
+/* Drawer links now carry a chevron ---------------------------------------- */
+.drawer__panel a.drawer__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.drawer__panel a.drawer__link svg {
+  width: 18px;
+  height: 18px;
+  color: var(--blue-500);
+  opacity: 0.6;
+}
+
+.drawer__panel a.drawer__link.active {
+  color: var(--blue-600);
+  background: var(--paper-2);
+}
+
+/* Inner-page responsive tweaks -------------------------------------------- */
+@media (max-width: 960px) {
+  .product__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .product__figure {
+    aspect-ratio: 16 / 11;
+  }
+}
+
+@media (max-width: 860px) {
+  .masonry {
+    columns: 2 150px;
+  }
+
+  .masonry__caption {
+    opacity: 1;
+    translate: 0 0;
+    font-size: 0.7rem;
+    padding: 1.4rem 0.6rem 0.5rem;
+  }
+
+  .product__actions .btn {
+    width: 100%;
+  }
+
+  .page-hero {
+    padding-top: calc(var(--header-h) + 2rem);
+    padding-bottom: 3rem;
+  }
+
+  .crumbs {
+    font-size: 0.75rem;
+  }
+}
+
+/* --------------------------------------------------------------------------
    21. Reduced motion & print
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
@@ -2675,7 +3126,9 @@ select {
 
   .hero__aurora,
   .hero__sweep,
+  .page-hero__aurora,
   .fab--wa::before,
+  .video__play::before,
   .lightbox__hint {
     display: none;
   }

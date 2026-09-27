@@ -1,6 +1,6 @@
 /**
- * Writes dist/sitemap.xml with the homepage plus an image entry for every
- * product photo, so Google Images can index the catalogue.
+ * Writes dist/sitemap.xml: every route the site publishes, plus an image entry
+ * for each product photo so the catalogue can surface in Google Images.
  *
  * Override the domain with VITE_SITE_URL in .env before building.
  */
@@ -15,7 +15,7 @@ async function envValue(key) {
   for (const file of ['.env.local', '.env']) {
     try {
       const text = await readFile(resolve(root, file), 'utf8')
-      const hit = text.match(new RegExp(`^\s*${key}\s*=\s*(.*)$`, 'm'))
+      const hit = text.match(new RegExp(`^\\s*${key}\\s*=\\s*(.*)$`, 'm'))
       if (hit) {
         const value = hit[1].trim().replace(/^["']|["']$/g, '')
         if (value) return value
@@ -31,41 +31,76 @@ const siteUrl = (
   (await envValue('VITE_SITE_URL')) || 'https://www.narmadaengineeringworks.com'
 ).replace(/\/$/, '')
 
-// Read the generated catalogue without needing a TS toolchain.
-const source = await readFile(resolve(root, 'src/data/products.ts'), 'utf8')
-const entries = [...source.matchAll(/title: '(.+?)',\s*category: '(.+?)',\s*src: '(.+?)',/g)].map(
-  ([, title, category, src]) => ({ title, category, src }),
-)
+// Read the generated data without needing a TS toolchain.
+const productSrc = await readFile(resolve(root, 'src/data/products.ts'), 'utf8')
+const products = [
+  ...productSrc.matchAll(
+    /slug: '(.+?)',\s*title: '(.+?)',\s*category: '(.+?)',\s*src: '(.+?)',/g,
+  ),
+].map(([, slug, title, category, src]) => ({ slug, title, category, src }))
 
-if (!entries.length) throw new Error('generate-sitemap: no products parsed from src/data/products.ts')
+if (!products.length) {
+  throw new Error('generate-sitemap: no products parsed from src/data/products.ts')
+}
+
+const pageSrc = await readFile(resolve(root, 'src/data/pages.ts'), 'utf8')
+const pagePaths = [...pageSrc.matchAll(/^\s*path: '(.+?)',$/gm)].map(([, p]) => p)
 
 const esc = (s) =>
   s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
 const today = new Date().toISOString().slice(0, 10)
 
-const images = entries
-  .map(
-    (p) => `    <image:image>
+function urlNode(path, { priority, changefreq, images = [] }) {
+  const imageXml = images
+    .map(
+      (p) => `    <image:image>
       <image:loc>${siteUrl}${p.src}</image:loc>
       <image:title>${esc(p.title)}</image:title>
       <image:caption>${esc(`${p.title} — ${p.category} fabricated by Narmada Engineering Works, Umbergaon, Gujarat`)}</image:caption>
     </image:image>`,
+    )
+    .join('\n')
+
+  return `  <url>
+    <loc>${siteUrl}${path === '/' ? '/' : path}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+${imageXml}${imageXml ? '\n' : ''}  </url>`
+}
+
+const nodes = []
+
+for (const path of pagePaths) {
+  nodes.push(
+    urlNode(path, {
+      priority: path === '/' ? '1.0' : path === '/products' ? '0.9' : '0.8',
+      changefreq: 'monthly',
+      // The products page carries the whole catalogue's images.
+      images: path === '/products' ? products : [],
+    }),
   )
-  .join('\n')
+}
+
+for (const p of products) {
+  nodes.push(
+    urlNode(`/products/${p.slug}`, {
+      priority: '0.7',
+      changefreq: 'yearly',
+      images: [p],
+    }),
+  )
+}
 
 const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-  <url>
-    <loc>${siteUrl}/</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-${images}
-  </url>
+${nodes.join('\n')}
 </urlset>
 `
 
 await writeFile(resolve(root, 'dist/sitemap.xml'), xml)
-console.log(`sitemap: wrote dist/sitemap.xml (${entries.length} product images)`)
+console.log(
+  `sitemap: ${pagePaths.length} pages + ${products.length} product pages, ${products.length} images`,
+)

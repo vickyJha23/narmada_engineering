@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
-import { nav, site } from '../data/site'
+import { Link } from 'react-router-dom'
+import { site } from '../data/site'
+import { navPages } from '../data/pages'
 import { productCategories } from '../data/products'
 import { track } from '../lib/analytics'
 import { mailLink, mapsLink, telLink, waLink } from '../lib/links'
@@ -26,9 +28,9 @@ export function Footer() {
           <div>
             <h4>Explore</h4>
             <ul>
-              {nav.map((n) => (
-                <li key={n.href}>
-                  <a href={n.href}>{n.label}</a>
+              {navPages.map((n) => (
+                <li key={n.path}>
+                  <Link to={n.path}>{n.label}</Link>
                 </li>
               ))}
             </ul>
@@ -39,7 +41,7 @@ export function Footer() {
             <ul>
               {productCategories.map((c) => (
                 <li key={c}>
-                  <a href="#products">{c}</a>
+                  <Link to={`/products?category=${encodeURIComponent(c)}`}>{c}</Link>
                 </li>
               ))}
             </ul>
@@ -151,14 +153,14 @@ export function MobileBar() {
           <Icon name="whatsapp" />
           WhatsApp
         </a>
-        <a
+        <Link
           className="is-quote"
-          href="#contact"
+          to="/contact"
           onClick={() => track('cta_click', { location: 'mobile_bar', label: 'Get a Quote' })}
         >
           <Icon name="mail" />
           Get a Quote
-        </a>
+        </Link>
       </div>
     </div>
   )

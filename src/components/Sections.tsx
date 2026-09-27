@@ -8,6 +8,7 @@ import {
   vision,
   whyChooseUs,
 } from '../data/site'
+import { Link } from 'react-router-dom'
 import { products } from '../data/products'
 import { faqs } from '../lib/seo'
 import { track } from '../lib/analytics'
@@ -45,18 +46,26 @@ const collage = [
   .map((slug) => products.find((p) => p.slug === slug))
   .filter((p): p is (typeof products)[number] => Boolean(p))
 
-export function About() {
+export function About({ compact = false }: { compact?: boolean } = {}) {
   return (
     <section className="section" id="about">
       <div className="container about__grid">
         <div className="about__copy reveal reveal--left">
           <p className="eyebrow">About Us</p>
           <h2>A dependable fabrication partner for Indian industry</h2>
-          {aboutParagraphs.map((p, i) => (
+          {(compact ? aboutParagraphs.slice(0, 2) : aboutParagraphs).map((p, i) => (
             <p key={i} className={i === 0 ? 'lede' : undefined}>
               {p}
             </p>
           ))}
+
+          {compact && (
+            <p style={{ marginTop: '1.5rem' }}>
+              <Link className="btn btn--outline" to="/about">
+                More about us <Icon name="arrow" />
+              </Link>
+            </p>
+          )}
         </div>
 
         <div className="about__media reveal reveal--right">
@@ -97,7 +106,7 @@ export function About() {
 
 /* --------------------------------------------------------- capabilities -- */
 
-export function Capabilities() {
+export function Capabilities({ compact = false }: { compact?: boolean } = {}) {
   return (
     <section className="section section--tint" id="capabilities">
       <div className="container">
@@ -111,7 +120,7 @@ export function Capabilities() {
         </div>
 
         <div className="cards" data-stagger="70">
-          {capabilities.map((c) => (
+          {(compact ? capabilities.slice(0, 6) : capabilities).map((c) => (
             <article className="card reveal reveal--scale" key={c.title}>
               <span className="card__icon">
                 <Icon name={c.icon as IconName} />
@@ -121,6 +130,14 @@ export function Capabilities() {
             </article>
           ))}
         </div>
+
+        {compact && (
+          <div className="gallery__more">
+            <Link className="btn btn--lg" to="/capabilities">
+              See all capabilities <Icon name="arrow" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   )
@@ -157,7 +174,7 @@ export function Process() {
 
 /* ----------------------------------------------------------- industries -- */
 
-export function Industries() {
+export function Industries({ compact = false }: { compact?: boolean } = {}) {
   return (
     <section className="section industries" id="industries">
       <div className="container">
@@ -167,13 +184,21 @@ export function Industries() {
         </div>
 
         <ul className="pill-list" data-stagger="45">
-          {industries.map((i) => (
+          {(compact ? industries.slice(0, 8) : industries).map((i) => (
             <li className="reveal" key={i}>
               <Icon name="check" />
               {i}
             </li>
           ))}
         </ul>
+
+        {compact && (
+          <div className="gallery__more">
+            <Link className="btn btn--outline btn--lg" to="/industries">
+              All industries we serve <Icon name="arrow" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   )
@@ -259,13 +284,13 @@ export function CtaBand() {
           >
             <Icon name="whatsapp" /> WhatsApp Enquiry
           </a>
-          <a
+          <Link
             className="btn btn--ghost btn--lg"
-            href="#contact"
+            to="/contact"
             onClick={() => track('cta_click', { location: 'cta_band', label: 'Contact Us' })}
           >
             Contact Us <Icon name="arrow" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

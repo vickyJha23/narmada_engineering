@@ -1,21 +1,23 @@
 import { useEffect, useState } from 'react'
-import { nav, site } from '../data/site'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+import { navPages } from '../data/pages'
+import { site } from '../data/site'
 import { track } from '../lib/analytics'
-import { useActiveSection, useBodyLock, useEscape, useScrolledPast } from '../lib/hooks'
+import { useBodyLock, useEscape, useScrolledPast } from '../lib/hooks'
 import { telLink, waLink } from '../lib/links'
 import { Icon } from './Icons'
 
-const sectionIds = nav.map((n) => n.href.slice(1))
-
 export function Header() {
   const stuck = useScrolledPast(40)
-  const active = useActiveSection(sectionIds)
   const [open, setOpen] = useState(false)
+  const { pathname } = useLocation()
+  const isHome = pathname === '/'
 
   useBodyLock(open)
   useEscape(() => setOpen(false), open)
 
-  // Close the drawer if the viewport grows back to desktop width.
+  // The drawer links close it themselves on click; this handles the viewport
+  // growing back to desktop width while it is still open.
   useEffect(() => {
     if (!open) return
     const mq = window.matchMedia('(min-width: 861px)')
@@ -25,12 +27,14 @@ export function Header() {
   }, [open])
 
   const primary = site.contacts[0]
+  // Only the home page has a dark hero behind the header to sit transparently over.
+  const solid = stuck || !isHome
 
   return (
     <>
-      <header className={`header${stuck ? ' is-stuck' : ''}`}>
+      <header className={`header${solid ? ' is-stuck' : ''}`}>
         <div className="container">
-          <a className="brand" href="#home" aria-label={`${site.name} — home`}>
+          <Link className="brand" to="/" aria-label={`${site.name} — home`}>
             <img
               src="/brand/logo.png"
               alt={site.name}
@@ -38,27 +42,23 @@ export function Header() {
               height={248}
               fetchPriority="high"
             />
-          </a>
+          </Link>
 
           <nav className="nav" aria-label="Primary">
-            {nav.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                aria-current={active === item.href.slice(1) ? 'true' : undefined}
-              >
+            {navPages.map((item) => (
+              <NavLink key={item.path} to={item.path} end={item.path === '/'}>
                 {item.label}
-              </a>
+              </NavLink>
             ))}
           </nav>
 
-          <a
+          <Link
             className="btn header-cta"
-            href="#contact"
+            to="/contact"
             onClick={() => track('cta_click', { location: 'header', label: 'Get a Quote' })}
           >
             Get a Quote
-          </a>
+          </Link>
 
           <button
             type="button"
@@ -93,15 +93,17 @@ export function Header() {
               </button>
             </div>
 
-            {nav.map((item) => (
-              <a
-                key={item.href}
+            {navPages.map((item) => (
+              <NavLink
+                key={item.path}
                 className="drawer__link"
-                href={item.href}
+                to={item.path}
+                end={item.path === '/'}
                 onClick={() => setOpen(false)}
               >
                 {item.label}
-              </a>
+                <Icon name="chevronRight" />
+              </NavLink>
             ))}
 
             <div className="drawer__actions">

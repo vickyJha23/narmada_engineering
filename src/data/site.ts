@@ -37,6 +37,21 @@ export const site = {
     closes: '19:00',
   },
   /**
+   * Factory tour video.
+   *
+   * Drop an MP4 at `public/media/factory-tour.mp4` and flip `available` to true.
+   * Until then the section shows the poster with a "coming soon" note and the
+   * video file is never requested. Keep the file under ~20 MB and 1080p: it is
+   * served as a static asset, not from a streaming service.
+   */
+  video: {
+    available: false,
+    src: '/media/factory-tour.mp4',
+    poster: '/media/factory-tour-poster.jpg',
+    title: 'Inside Narmada Engineering Works, Umbergaon',
+  },
+
+  /**
    * Social profiles. Paste the URLs here once the pages exist — the footer icons
    * and the schema.org `sameAs` links both appear automatically, and disappear
    * again while the list is empty. `icon` must be a name from Icons.tsx.
@@ -46,16 +61,6 @@ export const site = {
   social: [] as { label: string; url: string; icon: 'facebook' | 'instagram' | 'linkedin' }[],
 } as const
 
-export const nav = [
-  { label: 'Home', href: '#home' },
-  { label: 'About', href: '#about' },
-  { label: 'Capabilities', href: '#capabilities' },
-  { label: 'Products', href: '#products' },
-  { label: 'Industries', href: '#industries' },
-  { label: 'Why Us', href: '#why-us' },
-  { label: 'Contact', href: '#contact' },
-] as const
-
 export const aboutParagraphs = [
   'Narmada Engineering Works is a trusted manufacturing and fabrication company specialising in precision sheet metal fabrication, heavy fabrication, structural steel works, industrial components and customised engineering solutions. We are also specialised in Stenter Machine Hot Panels, Stenter Nozzle Chambers, Yarn Trolleys and textile machinery fabrication work.',
   'With strong industry experience, we deliver reliable products for various industrial applications with a focus on quality manufacturing, dimensional accuracy, durable finishing and timely project execution.',
@@ -64,7 +69,7 @@ export const aboutParagraphs = [
 ]
 
 export const vision =
-  'To make Narmada Engineering Works a trusted name in India’s fabrication and engineering industry by providing reliable, innovative and high-quality solutions for industrial supply chains.'
+  'To make Narmada Engineering Works a trusted name in Global fabrication and engineering industry by providing reliable, innovative and high-quality solutions for industrial supply chains.'
 
 export const mission =
   'To continuously improve our manufacturing systems and deliver precision-engineered products with excellent quality, quick turnaround, on-time delivery and dependable customer service.'

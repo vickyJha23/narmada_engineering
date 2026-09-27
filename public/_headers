@@ -7,10 +7,16 @@
 /products/*
   Cache-Control: public, max-age=2592000
 
+/gallery/*
+  Cache-Control: public, max-age=2592000
+
 /brand/*
   Cache-Control: public, max-age=2592000
 
-/index.html
+/media/*
+  Cache-Control: public, max-age=2592000
+
+/*.html
   Cache-Control: public, max-age=0, must-revalidate
 
 /*
