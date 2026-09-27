@@ -9,7 +9,7 @@ import { CtaBand } from '../components/Sections'
 import { productMeta } from '../lib/seo'
 import { track } from '../lib/analytics'
 import { mailLink, telLink, waLink } from '../lib/links'
-import { useKenBurns, useScrollReveal } from '../lib/animate'
+import { useScrollReveal } from '../lib/animate'
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -26,7 +26,6 @@ export default function ProductDetailPage() {
   )
 
   useScrollReveal([slug])
-  useKenBurns(scope, '.product__figure img')
 
   if (!product) return <Navigate to="/products" replace />
 
@@ -52,7 +51,10 @@ export default function ProductDetailPage() {
           </nav>
 
           <div className="product__grid">
-            <figure className="product__figure reveal reveal--scale">
+            <figure
+              className="product__figure reveal reveal--scale"
+              style={{ aspectRatio: `${product.width} / ${product.height}` }}
+            >
               <img
                 src={product.src}
                 alt={`${product.title} fabricated by ${site.name}, Umbergaon`}
