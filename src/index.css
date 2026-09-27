@@ -1758,12 +1758,11 @@ select {
    -------------------------------------------------------------------------- */
 
 /* a) Scroll reveals ------------------------------------------------------- */
-/* GSAP animates opacity and transform; CSS only supplies the starting state so
-   the prerendered HTML never flashes before GSAP takes over. The direction
-   modifiers below are read by lib/animate.ts — they carry no styles of their own.
-   `.no-js` (set by the <noscript> block in index.html) forces everything back on. */
+/* Keep content visible by default. GSAP applies the hidden animation state only
+   after it has initialized, so a delayed or failed animation can never hide a
+   page's content. The direction modifiers below are read by lib/animate.ts. */
 .reveal {
-  opacity: 0;
+  opacity: 1;
 }
 
 .reveal.is-visible {

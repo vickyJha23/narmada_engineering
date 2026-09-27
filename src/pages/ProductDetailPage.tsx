@@ -9,10 +9,15 @@ import { CtaBand } from '../components/Sections'
 import { productMeta } from '../lib/seo'
 import { track } from '../lib/analytics'
 import { mailLink, telLink, waLink } from '../lib/links'
-import { useScrollReveal } from '../lib/animate'
 
 export default function ProductDetailPage() {
   const { slug } = useParams<{ slug: string }>()
+  // Product URLs share one route pattern. Key the page by its parameter so a
+  // related-product navigation always gets a fresh page subtree.
+  return <ProductDetail key={slug} slug={slug} />
+}
+
+function ProductDetail({ slug }: { slug: string | undefined }) {
   const scope = useRef<HTMLDivElement>(null)
 
   const product = products.find((p) => p.slug === slug)
@@ -24,8 +29,6 @@ export default function ProductDetailPage() {
         : [],
     [product],
   )
-
-  useScrollReveal([slug])
 
   if (!product) return <Navigate to="/products" replace />
 
