@@ -102,19 +102,43 @@ export function Hero() {
           <div className="hero__stat" data-enter style={enter(6)}>
             <Icon name="whatsapp" />
             <div>
-              <strong>Send your drawing on WhatsApp</strong>
-              Quick feasibility check and quotation.
+              <strong>Send your drawing on WhatsApp &amp; Socials</strong>
+              Quick feasibility check, quotation &amp; updates.
             </div>
-            <a
-              className="btn btn--wa"
-              href={waLink()}
-              target="_blank"
-              rel="noopener"
-              onClick={() => track('whatsapp_click', { location: 'hero' })}
-              style={{ marginLeft: 'auto' }}
-            >
-              Chat
-            </a>
+            <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+              <a
+                className="btn btn--wa"
+                href={waLink()}
+                target="_blank"
+                rel="noopener"
+                aria-label="Chat on WhatsApp"
+                onClick={() => track('whatsapp_click', { location: 'hero' })}
+              >
+                Chat
+              </a>
+              <a
+                className="btn btn--ig"
+                href="https://www.instagram.com/narmadaengineeringworks"
+                target="_blank"
+                rel="noopener"
+                aria-label="Follow on Instagram"
+                onClick={() => track('social_click', { network: 'Instagram', location: 'hero' })}
+                style={{ padding: '0.55rem 0.65rem' }}
+              >
+                <Icon name="instagram" />
+              </a>
+              <a
+                className="btn btn--fb"
+                href="https://www.facebook.com/narmadaengineeringworks"
+                target="_blank"
+                rel="noopener"
+                aria-label="Follow on Facebook"
+                onClick={() => track('social_click', { network: 'Facebook', location: 'hero' })}
+                style={{ padding: '0.55rem 0.65rem' }}
+              >
+                <Icon name="facebook" />
+              </a>
+            </div>
           </div>
         </div>
       </div>

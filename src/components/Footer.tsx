@@ -176,6 +176,9 @@ export function FloatingActions() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  const ig = site.social.find((s) => s.icon === 'instagram')
+  const fb = site.social.find((s) => s.icon === 'facebook')
+
   return (
     <div className="fabs">
       <a
@@ -188,6 +191,30 @@ export function FloatingActions() {
       >
         <Icon name="whatsapp" />
       </a>
+      {ig && (
+        <a
+          className="fab fab--ig"
+          href={ig.url}
+          target="_blank"
+          rel="noopener"
+          aria-label="Follow us on Instagram"
+          onClick={() => track('social_click', { network: 'Instagram', location: 'fab' })}
+        >
+          <Icon name="instagram" />
+        </a>
+      )}
+      {fb && (
+        <a
+          className="fab fab--fb"
+          href={fb.url}
+          target="_blank"
+          rel="noopener"
+          aria-label="Follow us on Facebook"
+          onClick={() => track('social_click', { network: 'Facebook', location: 'fab' })}
+        >
+          <Icon name="facebook" />
+        </a>
+      )}
       <a
         className="fab fab--call"
         href={telLink(site.contacts[0].phone)}

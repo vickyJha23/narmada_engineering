@@ -116,6 +116,28 @@ export function Header() {
               >
                 <Icon name="whatsapp" /> WhatsApp Us
               </a>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
+                <a
+                  className="btn btn--ig"
+                  href="https://www.instagram.com/narmadaengineeringworks"
+                  target="_blank"
+                  rel="noopener"
+                  style={{ justifyContent: 'center' }}
+                  onClick={() => track('social_click', { network: 'Instagram', location: 'drawer' })}
+                >
+                  <Icon name="instagram" /> Instagram
+                </a>
+                <a
+                  className="btn btn--fb"
+                  href="https://www.facebook.com/narmadaengineeringworks"
+                  target="_blank"
+                  rel="noopener"
+                  style={{ justifyContent: 'center' }}
+                  onClick={() => track('social_click', { network: 'Facebook', location: 'drawer' })}
+                >
+                  <Icon name="facebook" /> Facebook
+                </a>
+              </div>
               <a
                 className="btn btn--outline btn--block"
                 href={telLink(primary.phone)}

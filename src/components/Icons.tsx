@@ -160,6 +160,25 @@ const icons = {
       <path d="M8.2 5.4a1 1 0 0 1 1.52-.85l8.1 5.09a1 1 0 0 1 0 1.69l-8.1 5.09A1 1 0 0 1 8.2 15.6Z" />
     </svg>
   ),
+  pause: (p: IconProps) => (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden focusable="false" {...p}>
+      <rect x="6" y="4" width="4" height="16" rx="1" />
+      <rect x="14" y="4" width="4" height="16" rx="1" />
+    </svg>
+  ),
+  volume: (p: IconProps) => (
+    <svg {...base} {...p}>
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+    </svg>
+  ),
+  volumeX: (p: IconProps) => (
+    <svg {...base} {...p}>
+      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+      <line x1="23" y1="9" x2="17" y2="15" />
+      <line x1="17" y1="9" x2="23" y2="15" />
+    </svg>
+  ),
   arrow: (p: IconProps) => (
     <svg {...base} {...p}>
       <path d="M5 12h13M13 6.5 18.5 12 13 17.5" />

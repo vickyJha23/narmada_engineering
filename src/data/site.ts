@@ -45,20 +45,27 @@ export const site = {
    * served as a static asset, not from a streaming service.
    */
   video: {
-    available: false,
+    available: true,
     src: '/media/factory-tour.mp4',
     poster: '/media/factory-tour-poster.jpg',
     title: 'Inside Narmada Engineering Works, Umbergaon',
   },
 
   /**
-   * Social profiles. Paste the URLs here once the pages exist — the footer icons
-   * and the schema.org `sameAs` links both appear automatically, and disappear
-   * again while the list is empty. `icon` must be a name from Icons.tsx.
-   *
-   *   { label: 'Instagram', url: 'https://instagram.com/…', icon: 'instagram' },
+   * Social profiles.
    */
-  social: [] as { label: string; url: string; icon: 'facebook' | 'instagram' | 'linkedin' }[],
+  social: [
+    {
+      label: 'Instagram',
+      url: 'https://www.instagram.com/narmadaengineeringworks',
+      icon: 'instagram',
+    },
+    {
+      label: 'Facebook',
+      url: 'https://www.facebook.com/narmadaengineeringworks',
+      icon: 'facebook',
+    },
+  ] as { label: string; url: string; icon: 'facebook' | 'instagram' | 'linkedin' }[],
 } as const
 
 export const aboutParagraphs = [
@@ -106,19 +113,9 @@ export const capabilities = [
     body: 'AHU sections, filter frames, mesh screens and filter housings for HVAC and clean-air systems.',
   },
   {
-    icon: 'louver',
-    title: 'Louvers & Dampers',
-    body: 'Louvered ventilation panels, multi-blade dampers and blade assemblies in galvanised and coated finishes.',
-  },
-  {
     icon: 'structure',
     title: 'MS Structures & Machine Frames',
     body: 'Structural steel works, base frames, skids, machine enclosures, guards and fabricated covers.',
-  },
-  {
-    icon: 'cabin',
-    title: 'Portable Cabins & Bunk Houses',
-    body: 'Portable site offices, security cabins and bunk house containers with cladding, doors and windows.',
   },
   {
     icon: 'hopper',
