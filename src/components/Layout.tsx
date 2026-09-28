@@ -3,7 +3,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 import { Header } from './Header'
 import { Footer, FloatingActions, MobileBar } from './Footer'
 import { Icon } from './Icons'
-import { initAnalytics, track } from '../lib/analytics'
+import { initAnalytics, trackPageView } from '../lib/analytics'
 import {
   useParallax,
   useScrollProgress,
@@ -35,14 +35,10 @@ export function Layout() {
     initAnalytics()
   }, [])
 
-  // Report each route change as its own page view.
-  const first = useRef(true)
+  // One page view per route. The page's <Seo> effect runs before this one
+  // (children first), so document.title already names the new page.
   useEffect(() => {
-    if (first.current) {
-      first.current = false
-      return
-    }
-    track('page_view', { page_path: pathname })
+    trackPageView(pathname)
   }, [pathname])
 
   return (

@@ -80,7 +80,9 @@ export function initAnalytics() {
       layer.push(arguments)
     }
     window.gtag('js', new Date())
-    window.gtag('config', gaId, { send_page_view: true, anonymize_ip: true })
+    // Page views are sent by trackPageView() on every route, including the
+    // first, so the title and URL are the ones React has just rendered.
+    window.gtag('config', gaId, { send_page_view: false })
     loadScript(`https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(gaId)}`)
   }
 
@@ -105,6 +107,23 @@ export function initAnalytics() {
   }
 
   trackScrollDepth()
+}
+
+let lastPath = ''
+
+/**
+ * Report one page view to GA4. Call after the route's <title> is in place.
+ * Clarity and Plausible follow history changes on their own, so only GA needs it.
+ */
+export function trackPageView(path: string) {
+  if (!enabled() || path === lastPath) return
+  lastPath = path
+  window.gtag?.('event', 'page_view', {
+    page_path: path,
+    page_location: window.location.href,
+    page_title: document.title,
+  })
+  if (env.DEV) console.debug('[analytics] page_view', path)
 }
 
 /** Send a custom event to every provider that is switched on. */

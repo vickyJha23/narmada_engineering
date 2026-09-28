@@ -52,6 +52,8 @@ Copy `.env.example` to `.env` and edit it. Every value is optional.
 | Variable | Purpose |
 | --- | --- |
 | `VITE_SITE_URL` | Live domain. Used for canonical URLs, `sitemap.xml` and schema.org data. |
+| `VITE_GOOGLE_SITE_VERIFICATION` | Google Search Console ownership code (HTML-tag method). |
+| `VITE_BING_SITE_VERIFICATION` | Bing Webmaster Tools ownership code. |
 | `VITE_GA_MEASUREMENT_ID` | Google Analytics 4 — visitor counts. |
 | `VITE_CLARITY_PROJECT_ID` | Microsoft Clarity — session replays and heatmaps. |
 | `VITE_PLAUSIBLE_DOMAIN` | Plausible — cookie-free visitor counts. |
@@ -199,19 +201,41 @@ To add a **new category**, add the name to `productCategories` in the same file.
   image, `aria-current` on the active nav item, and a `<noscript>` fallback carrying the
   company name, products, address and phone numbers.
 
-### After you go live
+### Getting found on Google
 
-1. Point `VITE_SITE_URL` at the real domain and rebuild — the canonical URL, sitemap and
-   structured data all follow it.
-2. Update the hard-coded domain in `index.html` (canonical + `og:url` + `og:image`) and in
-   `public/robots.txt` if the domain differs from the default.
-3. Add the site to [Google Search Console](https://search.google.com/search-console),
-   verify ownership, and submit `https://yourdomain/sitemap.xml`.
-4. Create a **Google Business Profile** for the Umbergaon works. For a local manufacturer
-   this usually brings more enquiries than the website ranking alone — and it links back
-   to the site, which helps the site too.
-5. Check the structured data with the
+The code side of SEO is done. Ranking now depends on Google knowing the site exists and
+on other sites pointing to it — work that happens outside this repo. In order of impact:
+
+1. **Set the domain.** Point `VITE_SITE_URL` at the real domain and rebuild — canonical
+   URLs, sitemap and structured data all follow it. If the domain differs from the default,
+   also update it in `index.html` (canonical, `og:url`, `og:image`) and `public/robots.txt`.
+2. **Google Search Console** — <https://search.google.com/search-console>
+   1. **Add property → URL prefix** → enter the live URL.
+   2. Choose **HTML tag**, copy only the `content="…"` value into
+      `VITE_GOOGLE_SITE_VERIFICATION` in `.env`, rebuild, upload, then press **Verify**.
+      (If you manage DNS, the **Domain** property with a TXT record works too and needs no
+      rebuild.)
+   3. **Sitemaps** → submit `sitemap.xml`.
+   4. **URL inspection** → paste the home page URL → **Request indexing**. Repeat for
+      `/products` and `/contact`.
+   5. Link it to Google Analytics — see [ANALYTICS.md](ANALYTICS.md).
+3. **Google Business Profile** — <https://business.google.com>. For "fabrication near
+   Umbergaon / Vapi" searches the map pack appears *above* normal results, so this is the
+   fastest way to the top. Use exactly the same name, address and phone numbers as the
+   website, pick *Metal fabricator* as the primary category, add the website link, upload
+   the photos from `public/products/`, and ask existing customers for reviews.
+4. **Bing Webmaster Tools** — <https://www.bing.com/webmasters>. Choose *Import from
+   Google Search Console* (no code needed), or put the meta code in
+   `VITE_BING_SITE_VERIFICATION`. Bing also feeds DuckDuckGo and Yahoo.
+5. **Listings and backlinks.** Register the business, with the website link and identical
+   address/phone, on IndiaMART, TradeIndia, Justdial, and any local industry association
+   (e.g. UIA Umbergaon, VIA Vapi). Ask customers and suppliers to link to the site.
+6. **Check structured data** with the
    [Rich Results Test](https://search.google.com/test/rich-results).
+
+Expect new pages to be indexed within days, and ranking for competitive terms to build
+over 2–6 months. The company name itself usually ranks first within a couple of weeks of
+verification. Track progress in Search Console → **Performance**.
 
 ---
 

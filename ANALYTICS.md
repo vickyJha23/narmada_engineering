@@ -23,6 +23,10 @@ default.
 5. On the **Data collection** screen choose **Web**.
 6. Website URL: your domain, e.g. `www.narmadaengineeringworks.com`. Stream name: `Website`.
 7. Google shows a **Measurement ID** that looks like `G-XXXXXXXXXX`. Copy it.
+8. On the same Web stream screen, open **Enhanced measurement → ⚙ → Page views → Show
+   advanced settings** and **untick "Page changes based on browser history events"**.
+   The site already reports every page change itself (with the correct page title);
+   leaving this on counts each page twice.
 
 ## Step 2 — Put the ID into the site
 
@@ -89,6 +93,20 @@ The most useful report for a fabrication business is **Events → `whatsapp_clic
 
 ---
 
+## Link Analytics to Search Console
+
+Once the site is verified in Google Search Console (see *Getting found on Google* in
+`README.md`), link the two so Analytics shows **which Google searches brought each
+visitor**:
+
+1. Analytics → **Admin → Product links → Search Console links → Link**.
+2. Choose the Search Console property, then the `Website` web stream → **Submit**.
+3. After a day or two, **Reports → Acquisition → Search Console → Queries** lists the
+   search terms people used (e.g. *stenter hot panel manufacturer*) and your position
+   for each.
+
+---
+
 ## Optional — Microsoft Clarity (watch real visits)
 
 Clarity records anonymous replays and heatmaps, which is the fastest way to see whether
@@ -132,7 +150,7 @@ pairs well with, rather than replaces, the options above.
 - No enquiry data is stored on this website. The contact form opens WhatsApp or your
   email app on the visitor's own device; the message never passes through a server.
 - Analytics is disabled entirely until you add an ID.
-- Google Analytics is configured with `anonymize_ip`, and visitors sending a Do-Not-Track
+- Google Analytics 4 never stores full IP addresses, and visitors sending a Do-Not-Track
   signal are skipped unless you turn that off.
 - If you add analytics and your visitors include people in the EU or UK, you are expected
   to show a cookie notice for Google Analytics. Plausible and Cloudflare Web Analytics
