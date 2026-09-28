@@ -1,11 +1,8 @@
 /**
  * GSAP animation layer.
  *
- * GSAP owns every scroll-driven effect on the site. The stylesheet only supplies
- * the *initial* hidden state (`.reveal { opacity: 0 }`), so prerendered HTML never
- * flashes its content before GSAP takes over — and `<noscript>` plus the
- * reduced-motion media query both force everything visible again, so nothing is
- * ever locked behind an animation that did not run.
+ * GSAP owns scroll-driven motion on the site. Reveal elements remain visible
+ * while triggers are being installed, so a missed trigger can never hide content.
  */
 import { useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
@@ -63,14 +60,16 @@ export function useScrollReveal(deps: unknown[] = []) {
         return { x: 0, y: 28, scale: 1 }
       }
 
-      nodes.forEach((el) => gsap.set(el, { ...from(el), opacity: 0 }))
+      // Keep content visible even when route changes or scroll restoration cause
+      // ScrollTrigger to miss an enter event. Motion is decorative; visibility
+      // must not depend on it.
+      nodes.forEach((el) => gsap.set(el, from(el)))
 
       ScrollTrigger.batch(nodes, {
         start: 'top 88%',
         once: true,
         onEnter: (batch) => {
           gsap.to(batch, {
-            opacity: 1,
             x: 0,
             y: 0,
             scale: 1,

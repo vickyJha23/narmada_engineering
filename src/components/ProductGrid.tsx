@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react'
 import type { CSSProperties } from 'react'
-import { Link } from 'react-router-dom'
 import { productCategories, products, type Product } from '../data/products'
 import { track } from '../lib/analytics'
 import { useScrollReveal } from '../lib/animate'
@@ -11,9 +10,9 @@ export const ALL = 'All Products'
 /** One product card. Links through to the product's own page. */
 export function ProductCard({ product, index = 0 }: { product: Product; index?: number }) {
   return (
-    <Link
+    <a
       className="tile reveal reveal--scale"
-      to={`/products/${product.slug}`}
+      href={`/products/${product.slug}`}
       style={{ animationDelay: `${Math.min(index, 12) * 28}ms` } as CSSProperties}
       onClick={() =>
         track('product_view', { product: product.title, category: product.category })
@@ -28,7 +27,7 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
         decoding="async"
       />
       <span className="tile__label">{product.title}</span>
-    </Link>
+    </a>
   )
 }
 

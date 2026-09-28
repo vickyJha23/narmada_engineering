@@ -309,7 +309,7 @@ select {
 }
 
 .btn--outline:hover {
-  background: var(--paper-3);
+  background: transparent;
   border-color: var(--blue-500);
   box-shadow: none;
 }
@@ -1758,12 +1758,11 @@ select {
    -------------------------------------------------------------------------- */
 
 /* a) Scroll reveals ------------------------------------------------------- */
-/* GSAP animates opacity and transform; CSS only supplies the starting state so
-   the prerendered HTML never flashes before GSAP takes over. The direction
-   modifiers below are read by lib/animate.ts — they carry no styles of their own.
-   `.no-js` (set by the <noscript> block in index.html) forces everything back on. */
+/* Keep content visible by default. GSAP applies the hidden animation state only
+   after it has initialized, so a delayed or failed animation can never hide a
+   page's content. The direction modifiers below are read by lib/animate.ts. */
 .reveal {
-  opacity: 0;
+  opacity: 1;
 }
 
 .reveal.is-visible {
@@ -2811,7 +2810,7 @@ select {
 
 .product__grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: clamp(1.75rem, 4vw, 3.5rem);
   align-items: start;
 }
@@ -2823,7 +2822,6 @@ select {
   background: #fff;
   border: 1px solid rgb(255 255 255 / 0.18);
   box-shadow: var(--shadow-lg);
-  aspect-ratio: 4 / 3;
   display: grid;
   place-items: center;
 }
@@ -3231,10 +3229,6 @@ select {
 @media (max-width: 960px) {
   .product__grid {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .product__figure {
-    aspect-ratio: 16 / 11;
   }
 }
 
