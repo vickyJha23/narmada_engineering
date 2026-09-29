@@ -17,6 +17,4 @@ export function mailLink(subject = `Enquiry — ${site.name}`, body = '') {
   return `mailto:${site.email}?${params.toString()}`
 }
 
-export const mapsLink = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-  site.address.full,
-)}`
+export const mapsLink = site.googleMaps

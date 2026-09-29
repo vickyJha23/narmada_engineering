@@ -29,6 +29,8 @@ export const site = {
     full: 'Survey No. 918, Bhomti Faliya, Village: Solsumba, Taluka: Umbergaon, Dist. Valsad, Gujarat – 396165, India',
   },
   geo: { lat: 20.1736, lng: 72.7906 },
+  /** Shared Google Maps link for the works; "Directions" buttons open this. */
+  googleMaps: 'https://maps.app.goo.gl/GDNpGirLur2seKU88',
   hours: 'Mon – Sat, 9:00 AM – 7:00 PM',
   openingHours: {
     days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],

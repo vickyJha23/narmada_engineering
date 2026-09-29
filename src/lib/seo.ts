@@ -50,6 +50,7 @@ function organisationNode() {
       latitude: site.geo.lat,
       longitude: site.geo.lng,
     },
+    hasMap: site.googleMaps,
     areaServed: { '@type': 'Country', name: 'India' },
     openingHoursSpecification: [
       {
