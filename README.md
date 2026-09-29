@@ -187,7 +187,7 @@ To add a **new category**, add the name to `productCategories` in the same file.
 - **Structured data, per page.** `src/lib/seo.ts` builds a schema.org `@graph` for each
   route: `Organization`/`LocalBusiness` and `WebSite` everywhere, plus `BreadcrumbList` on
   inner pages, an `OfferCatalog` of the whole catalogue on `/products`, `Service` on
-  `/capabilities`, `FAQPage` on `/contact`, and a full `Product` node on every product page.
+  `/capabilities`, `FAQPage` on `/contact`, and a `Service` node on every product page (made-to-drawing items have no list price, which Google requires for `Product`).
 - **Meta tags.** Title, description, keywords, canonical, robots, Open Graph, Twitter
   card and `geo.*` local-business hints are all in `index.html`.
 - **Sitemap.** `dist/sitemap.xml` lists all 75 URLs and includes an `<image:image>` entry

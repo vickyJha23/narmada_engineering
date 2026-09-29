@@ -111,12 +111,12 @@ function catalogNode() {
         .map((p) => ({
           '@type': 'Offer',
           itemOffered: {
-            '@type': 'Product',
+            '@type': 'Service',
             name: p.title,
             category,
             url: abs(`/products/${p.slug}`),
             image: abs(p.src),
-            manufacturer: { '@id': orgId },
+            provider: { '@id': orgId },
           },
         })),
     })),
@@ -188,7 +188,7 @@ export function pageMeta(path: string): PageMeta {
   }
 }
 
-/** Meta + Product schema for a single product page. */
+/** Meta + Service schema for a single product page. */
 export function productMeta(product: Product): PageMeta {
   const title = `${product.title} Manufacturer in Umbergaon, Gujarat`
   const description = `${product.title} — ${product.category.toLowerCase()} fabricated to drawing by ${
@@ -205,29 +205,21 @@ export function productMeta(product: Product): PageMeta {
       '@graph': [
         organisationNode(),
         websiteNode(),
+        // Every item is made to drawing and quoted per job, so there is no list
+        // price. Schema.org Product without a price, review or rating is flagged
+        // invalid by Google's product-snippet checks — describe it as a service.
         {
-          '@type': 'Product',
-          '@id': `${abs(`/products/${product.slug}`)}#product`,
+          '@type': 'Service',
+          '@id': `${abs(`/products/${product.slug}`)}#service`,
           name: product.title,
+          serviceType: `${product.title} fabrication`,
           category: product.category,
           image: abs(product.src),
           description,
           url: abs(`/products/${product.slug}`),
-          manufacturer: { '@id': orgId },
+          provider: { '@id': orgId },
           brand: { '@id': orgId },
-          offers: {
-            '@type': 'Offer',
-            availability: 'https://schema.org/InStock',
-            priceCurrency: 'INR',
-            url: abs(`/products/${product.slug}`),
-            seller: { '@id': orgId },
-            // Every job is quoted to drawing, so no fixed list price is published.
-            priceSpecification: {
-              '@type': 'PriceSpecification',
-              priceCurrency: 'INR',
-              valueAddedTaxIncluded: false,
-            },
-          },
+          areaServed: { '@type': 'Country', name: 'India' },
         },
         breadcrumbNode([
           { name: 'Home', path: '/' },
