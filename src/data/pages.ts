@@ -69,9 +69,9 @@ export const pages: PageDef[] = [
   {
     path: '/gallery',
     label: 'Our Work',
-    title: 'Our Work — Shop Floor, Fabrication & Dispatch Gallery',
+    title: 'Our Work — Textile Machinery & Fabrication Gallery',
     description:
-      'Photographs from the Narmada Engineering Works shop floor in Umbergaon: fabrication in progress, finishing and powder coating, packed jobs and loaded dispatches.',
+      'Photographs from the Narmada Engineering Works shop floor in Umbergaon: yarn trolleys, textile machinery parts and fabrication in progress, finishing and powder coating, packed jobs and loaded dispatches.',
     heading: 'From the shop floor',
     intro:
       'Work in progress, finished jobs and dispatch days, photographed at our Umbergaon works.',
