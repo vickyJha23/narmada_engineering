@@ -25,9 +25,9 @@ export const pages: PageDef[] = [
   {
     path: '/',
     label: 'Home',
-    title: 'Industrial Fabrication & Sheet Metal Manufacturer in Umbergaon, Gujarat',
+    title: 'Stenter Machine Parts & Industrial Fabrication in Umbergaon, Gujarat',
     description:
-      'Precision sheet metal fabrication, heavy fabrication and structural steel works from Umbergaon, Gujarat. Stenter machine hot panels, nozzle chambers, yarn trolleys, ducting, AHU components and portable cabins, made to your drawing.',
+      'Stenter machine hot panels, stenter nozzle chambers and textile machinery fabrication from Umbergaon, Gujarat. Also sheet metal, heavy fabrication, structural steel, yarn trolleys, ducting and AHU components, made to your drawing.',
     heading: 'Industrial Fabrication & Sheet Metal Solutions',
     intro:
       'Trusted manufacturing partner for precision fabrication and engineering excellence.',
@@ -38,7 +38,7 @@ export const pages: PageDef[] = [
     label: 'About',
     title: 'About Us — Fabrication Company in Umbergaon, Valsad',
     description:
-      'Narmada Engineering Works is a trusted manufacturing and fabrication company specialising in precision sheet metal, heavy fabrication, structural steel works and textile machinery components. Read about our vision, mission and way of working.',
+      'Narmada Engineering Works is a stenter machine and textile machinery fabrication company in Umbergaon, also specialising in precision sheet metal, heavy fabrication and structural steel works. Read about our vision, mission and way of working.',
     heading: 'A dependable fabrication partner for Indian industry',
     intro:
       'Skilled manpower, modern fabrication practices and a technical team that reads your drawing before it quotes it.',

@@ -60,7 +60,7 @@ function organisationNode() {
         closes: site.openingHours.closes,
       },
     ],
-    ...(site.social.length > 0 ? { sameAs: site.social.map((s) => s.url) } : {}),
+    sameAs: [...site.social.map((s) => s.url), site.googleMaps],
     knowsAbout: capabilities.map((c) => c.title),
     contactPoint: site.contacts.map((c) => ({
       '@type': 'ContactPoint',

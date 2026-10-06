@@ -11,7 +11,7 @@ export const site = {
   speciality:
     'Fabrication work & services of any Stenter Machine & Textile Machinery.',
   description:
-    'Narmada Engineering Works, Umbergaon, Gujarat — precision sheet metal fabrication, heavy fabrication, structural steel works, stenter machine hot panels, nozzle chambers, yarn trolleys, ducting, AHU components, portable cabins and customised engineering solutions.',
+    'Narmada Engineering Works, Umbergaon, Gujarat — stenter machine hot panels, stenter nozzle chambers, textile machinery fabrication, precision sheet metal fabrication, heavy fabrication, structural steel works, yarn trolleys, ducting, AHU components, portable cabins and customised engineering solutions.',
   url: 'https://www.narmadaengineeringworks.com',
   email: 'narmada.engworks@yahoo.com',
   founded: '',
@@ -28,9 +28,10 @@ export const site = {
     countryName: 'India',
     full: 'Survey No. 918, Bhomti Faliya, Village: Solsumba, Taluka: Umbergaon, Dist. Valsad, Gujarat – 396165, India',
   },
-  geo: { lat: 20.1736, lng: 72.7906 },
-  /** Shared Google Maps link for the works; "Directions" buttons open this. */
-  googleMaps: 'https://maps.app.goo.gl/GDNpGirLur2seKU88',
+  // Matches the pin on the Google Business Profile — keep the two in sync.
+  geo: { lat: 20.155349, lng: 72.788842 },
+  /** Google Business Profile listing (by CID); "Directions" buttons open this. */
+  googleMaps: 'https://maps.google.com/?cid=15584430024548456621',
   hours: 'Mon – Sat, 9:00 AM – 7:00 PM',
   openingHours: {
     days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
@@ -70,7 +71,7 @@ export const site = {
 } as const
 
 export const aboutParagraphs = [
-  'Narmada Engineering Works is a trusted manufacturing and fabrication company specialising in precision sheet metal fabrication, heavy fabrication, structural steel works, industrial components and customised engineering solutions. We are also specialised in Stenter Machine Hot Panels, Stenter Nozzle Chambers, Yarn Trolleys and textile machinery fabrication work.',
+  'Narmada Engineering Works is a stenter machine and industrial fabrication company specialising in Stenter Machine Hot Panels, Stenter Nozzle Chambers, Yarn Trolleys and textile machinery fabrication work, along with precision sheet metal fabrication, heavy fabrication, structural steel works and customised engineering solutions.',
   'With strong industry experience, we deliver reliable products for various industrial applications with a focus on quality manufacturing, dimensional accuracy, durable finishing and timely project execution.',
   'Supported by skilled manpower, modern fabrication practices and a dedicated technical team, we handle both precision jobs and heavy industrial fabrication requirements with confidence.',
   'Our aim is to provide dependable engineering solutions through continuous improvement, quick turnaround, on-time delivery and complete customer satisfaction.',
@@ -201,6 +202,4 @@ export const highlights = [
   'Custom Job Work',
 ]
 
-export const mapQuery = encodeURIComponent(
-  'Solsumba, Umbergaon, Valsad, Gujarat 396165, India',
-)
+export const mapQuery = `${site.geo.lat},${site.geo.lng}`

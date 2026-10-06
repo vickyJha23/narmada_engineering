@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+import { Link } from 'react-router-dom'
 import { highlights, site } from '../data/site'
 import { products } from '../data/products'
 import { track } from '../lib/analytics'
@@ -60,13 +61,13 @@ export function Hero() {
           </p>
 
           <div className="hero__actions" data-enter style={enter(4)}>
-            <a
+            <Link
               className="btn btn--lg"
-              href="#contact"
+              to="/contact"
               onClick={() => track('cta_click', { location: 'hero', label: 'Request a Quote' })}
             >
               Request a Quote <Icon name="arrow" />
-            </a>
+            </Link>
             <a
               className="btn btn--ghost btn--lg"
               href="#products"
