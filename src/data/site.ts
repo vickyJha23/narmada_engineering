@@ -195,6 +195,7 @@ export const processSteps = [
 ]
 
 export const highlights = [
+  'Stenter Machine & Parts',
   'Precision Sheet Metal',
   'Heavy Fabrication',
   'Structural Steel Works',

@@ -18,7 +18,7 @@ import { Icon, type IconName } from './Icons'
 /* ---------------------------------------------------------------- strip -- */
 
 export function Strip() {
-  const line = [...highlights, 'Stenter Machine Fabrication', 'Fabrication to Drawing']
+  const line = [...highlights, 'Fabrication to Drawing']
   return (
     <div className="strip" aria-hidden="true">
       <div className="strip__track">
