@@ -119,7 +119,7 @@ export function Hero() {
               </a>
               <a
                 className="btn btn--ig"
-                href="https://www.instagram.com/narmadaengineeringworks"
+                href="https://www.instagram.com/narmadaengineeeringworks/"
                 target="_blank"
                 rel="noopener"
                 aria-label="Follow on Instagram"
@@ -130,7 +130,7 @@ export function Hero() {
               </a>
               <a
                 className="btn btn--fb"
-                href="https://www.facebook.com/narmadaengineeringworks"
+                href="https://www.facebook.com/narmadaengineeringwork/"
                 target="_blank"
                 rel="noopener"
                 aria-label="Follow on Facebook"

@@ -59,12 +59,12 @@ export const site = {
   social: [
     {
       label: 'Instagram',
-      url: 'https://www.instagram.com/narmadaengineeringworks',
+      url: 'https://www.instagram.com/narmadaengineeeringworks/',
       icon: 'instagram',
     },
     {
       label: 'Facebook',
-      url: 'https://www.facebook.com/narmadaengineeringworks',
+      url: 'https://www.facebook.com/narmadaengineeringwork/',
       icon: 'facebook',
     },
   ] as { label: string; url: string; icon: 'facebook' | 'instagram' | 'linkedin' }[],

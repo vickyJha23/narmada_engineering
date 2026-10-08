@@ -119,7 +119,7 @@ export function Header() {
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.5rem' }}>
                 <a
                   className="btn btn--ig"
-                  href="https://www.instagram.com/narmadaengineeringworks"
+                  href="https://www.instagram.com/narmadaengineeeringworks/"
                   target="_blank"
                   rel="noopener"
                   style={{ justifyContent: 'center' }}
@@ -129,7 +129,7 @@ export function Header() {
                 </a>
                 <a
                   className="btn btn--fb"
-                  href="https://www.facebook.com/narmadaengineeringworks"
+                  href="https://www.facebook.com/narmadaengineeringwork/"
                   target="_blank"
                   rel="noopener"
                   style={{ justifyContent: 'center' }}
